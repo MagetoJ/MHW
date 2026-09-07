@@ -16,9 +16,9 @@ interface GalleryItem {
 export const dynamic = 'force-dynamic'
 
 export default async function GalleryPage() {
-  // 2. Fetch documents from Sanity
+  // Query supporting both potential schema name definitions
   const images: GalleryItem[] = await client.fetch(
-    `*[_type == "gallery"]{ _id, title, caption, image }`
+    `*[_type in ["gallery", "galleryItem"]]{ _id, title, caption, image }`
   )
 
   return (

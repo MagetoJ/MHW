@@ -1,15 +1,10 @@
 export const gallerySchema = {
-  name: 'galleryItem',
-  title: 'Gallery Item',
+  name: 'gallery', // Must match _type in the query
+  title: 'Gallery',
   type: 'document',
   fields: [
     { name: 'title', title: 'Title', type: 'string' },
-    {
-      name: 'image',
-      title: 'Image',
-      type: 'image',
-      options: { hotspot: true },
-    },
-    { name: 'alt', title: 'Alt Text', type: 'string' },
+    { name: 'caption', title: 'Caption', type: 'string' },
+    { name: 'image', title: 'Image', type: 'image', options: { hotspot: true } },
   ],
 }

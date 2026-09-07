@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { client } from '@/lib/sanity'
+import { client, urlFor } from '@/lib/sanity'
 
 interface MenuItem {
   _id: string
@@ -7,16 +7,17 @@ interface MenuItem {
   description: string
   price: string | number
   category: string
+  image?: any // Added image field
 }
 
-export const revalidate = 60 // Revalidate cache every 60 seconds
+export const dynamic = 'force-dynamic'
 
 export default async function MenuPage() {
+  // Query explicitly fetching the image field
   const items: MenuItem[] = await client.fetch(
-    `*[_type == "menuItem"]{ _id, title, description, price, category }`
+    `*[_type == "menuItem"]{ _id, title, description, price, category, image }`
   )
 
-  // Group fetched items by category
   const menuGrouped = items.reduce((acc, item) => {
     const category = item.category || 'Other'
     if (!acc[category]) acc[category] = []
@@ -37,7 +38,7 @@ export default async function MenuPage() {
         <header className="site-header">
           <Link href="/" className="wordmark">MARIA HAVENS<span>•</span></Link>
           <nav className="nav-links" aria-label="Main navigation">
-           
+            <Link href="/">Home</Link>
             <Link href="/menu" className="active">Menu</Link>
             <Link href="/about">Our story</Link>
             <Link href="/gallery">Gallery</Link>
@@ -68,6 +69,14 @@ export default async function MenuPage() {
                 <div>
                   {dishes.map((dish) => (
                     <div className="dish" key={dish._id}>
+                      {/* Image rendering block */}
+                      {dish.image?.asset && (
+                        <img
+                          src={urlFor(dish.image).width(300).height(300).quality(85).url()}
+                          alt={dish.title}
+                          style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px', marginRight: '16px' }}
+                        />
+                      )}
                       <div>
                         <h4>{dish.title}</h4>
                         <p>{dish.description}</p>
