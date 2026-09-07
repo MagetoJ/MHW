@@ -1,10 +1,13 @@
-/** @type {import('next').NextConfig} */
+// next.config.mjs
+/** @type {import('next').NextType} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+      },
+    ],
   },
 }
 

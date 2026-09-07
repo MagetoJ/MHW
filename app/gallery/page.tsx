@@ -1,59 +1,98 @@
-import Image from 'next/image'
+import Link from 'next/link'
 import { client, urlFor } from '@/lib/sanity'
 
 interface GalleryItem {
   _id: string
-  title: string
-  alt?: string
-  image: any
-}
-
-async function getGalleryItems(): Promise<GalleryItem[]> {
-  try {
-    return await client.fetch(`*[_type == "galleryItem"]{ _id, title, image, alt }`)
-  } catch {
-    return []
+  title?: string
+  caption?: string
+  image?: {
+    asset?: {
+      _ref?: string
+    }
   }
 }
 
+// 1. Force Next.js to fetch fresh Sanity data on every request
+export const dynamic = 'force-dynamic'
+
 export default async function GalleryPage() {
-  const items = await getGalleryItems()
+  // 2. Fetch documents from Sanity
+  const images: GalleryItem[] = await client.fetch(
+    `*[_type == "gallery"]{ _id, title, caption, image }`
+  )
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold">Photo Gallery</h1>
-        <p className="text-muted-foreground mt-2">Browse our latest uploads from Sanity CMS.</p>
-      </div>
+    <main>
+      <section className="hero" id="home">
+        <img
+          className="hero-image"
+          src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2200&q=90"
+          alt="Atmospheric dining room with intimate tables"
+        />
+        <div className="hero-shade" />
 
-      {items.length === 0 ? (
-        <div className="text-center py-16 border border-dashed rounded-lg">
-          <p className="text-muted-foreground">No photos found. Add items to Sanity Studio to populate this page.</p>
+        <header className="site-header">
+          <Link href="/" className="wordmark">MARIA HAVENS<span>•</span></Link>
+          <nav className="nav-links" aria-label="Main navigation">
+           
+            <Link href="/menu">Menu</Link>
+            <Link href="/about">Our story</Link>
+            <Link href="/gallery" className="active">Gallery</Link>
+            <Link href="/contact">Visit</Link>
+          </nav>
+          <Link href="/#reserve" className="header-cta">Reserve a table</Link>
+        </header>
+
+        <div className="hero-content">
+          <p className="eyebrow light">Visual Impressions · Kisii, Kenya</p>
+          <h1>A glimpse inside<br /><em>our table & kitchen.</em></h1>
+          <Link href="/#reserve" className="button button-light">Reserve a table <span>↗</span></Link>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {items.map((item) => (
-            <div key={item._id} className="group overflow-hidden rounded-lg border bg-card shadow-sm hover:shadow-md transition">
-              <div className="relative aspect-square w-full overflow-hidden bg-muted">
-                {item.image && (
-                  <Image
-                    src={urlFor(item.image).url()}
-                    alt={item.alt || item.title || 'Gallery image'}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                )}
-              </div>
-              {item.title && (
-                <div className="p-3">
-                  <p className="text-sm font-medium truncate">{item.title}</p>
-                </div>
-              )}
-            </div>
-          ))}
+        <p className="hero-note">Captured in<br />warm light</p>
+      </section>
+
+      <section className="gallery-section section-pad" id="gallery-grid">
+        <div className="section-heading">
+          <div className="section-kicker"><span>01</span><span>From the Room</span></div>
+          <p>Moments of craft, warmth, and quiet gathering<br className="desktop-break" /> captured in service.</p>
         </div>
-      )}
-    </div>
+
+        <div className="gallery-grid">
+          {images.length > 0 ? (
+            images.map((item) => {
+              const imageRef = item.image?.asset?._ref
+              return (
+                <figure key={item._id}>
+                  {imageRef ? (
+                    <img
+                      src={urlFor(item.image).width(1200).quality(85).url()}
+                      alt={item.title || item.caption || 'Maria Havens Gallery Image'}
+                    />
+                  ) : (
+                    <div style={{ padding: '20px', background: '#222', color: '#fff' }}>
+                      [Image reference missing or unattached]
+                    </div>
+                  )}
+                </figure>
+              )
+            })
+          ) : (
+            <p className="body-copy">No gallery items found in Sanity. Ensure documents are published.</p>
+          )}
+        </div>
+      </section>
+
+      <footer className="site-footer">
+        <Link href="/" className="wordmark">MARIA HAVENS<span>•</span></Link>
+        <div className="footer-center">
+          <p>Good food, honestly made.</p>
+          <p className="muted">© 2026 Maria Havens Restaurant</p>
+        </div>
+        <div className="footer-links">
+          <a href="#instagram">Instagram</a>
+          <a href="mailto:hello@mariahavens.co.ke">Email us</a>
+        </div>
+      </footer>
+    </main>
   )
 }
