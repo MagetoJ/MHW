@@ -1,14 +1,14 @@
-// next.config.mjs
-/** @type {import('next').NextType} */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'cdn.sanity.io',
+        hostname: 'images.unsplash.com',
       },
     ],
+    unoptimized: true,
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

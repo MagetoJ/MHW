@@ -12,16 +12,16 @@ const homeSlides: CarouselSlide[] = [
     subtitle: 'A neighborhood restaurant · Kisii, Kenya',
   },
   {
-    src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=85',
+    src: '/event.jpeg', // Local image inside public/
     alt: 'Atmospheric dining room with intimate tables',
     title: 'Warm & Inviting',
     subtitle: 'Seasonal cooking since 2025',
   },
   {
-    src: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1600&q=85',
-    alt: 'Seasonal vegetables arranged on a ceramic plate',
-    title: 'Fresh & Local',
-    subtitle: 'Sourced with care from local farmers and makers',
+    src: '/event.jpeg', // Local image inside public/
+    alt: 'Atmospheric dining room with intimate tables',
+    title: 'Warm & Inviting',
+    subtitle: 'Seasonal cooking since 2025',
   },
 ]
 

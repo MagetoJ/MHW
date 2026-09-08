@@ -42,12 +42,13 @@ export function ImageCarousel({ slides, autoPlayInterval = 5000 }: ImageCarousel
           }`}
         >
           <Image
-            src={slide.src}
-            alt={slide.alt}
-            fill
-            priority={index === 0}
-            className="object-cover"
-          />
+  src={slide.src}
+  alt={slide.alt}
+  fill
+  sizes="100vw"
+  priority={index === 0}
+  className="object-cover"
+/>
           <div className="absolute inset-0 bg-black/30" />
           {(slide.title || slide.subtitle) && (
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
