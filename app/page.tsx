@@ -12,16 +12,16 @@ const homeSlides: CarouselSlide[] = [
     subtitle: 'A neighborhood restaurant · Kisii, Kenya',
   },
   {
-    src: '/event.jpeg', // Local image inside public/
+    src: '/event.jpeg',
     alt: 'Atmospheric dining room with intimate tables',
     title: 'Warm & Inviting',
     subtitle: 'Seasonal cooking since 2025',
   },
   {
-    src: '/event.jpeg', // Local image inside public/
-    alt: 'Atmospheric dining room with intimate tables',
-    title: 'Warm & Inviting',
-    subtitle: 'Seasonal cooking since 2025',
+    src: '/maria-havens.jpeg',
+    alt: 'Chef preparing a seasonal dish',
+    title: 'Seasonal Offerings',
+    subtitle: 'Guided by nature, served with care',
   },
 ]
 
@@ -37,12 +37,11 @@ const menuHighlights = {
 }
 
 const galleryPreview = [
-  { src: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1100&q=85', alt: 'Seasonal vegetables arranged on a ceramic plate', className: 'gallery-tall' },
-  { src: 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=900&q=85', alt: 'Chef preparing a dish in a warm kitchen', className: '' },
-  { src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=85', alt: 'Atmospheric dining room with intimate tables', className: '' },
-  { src: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=1100&q=85', alt: 'Fresh pasta with seasonal ingredients', className: 'gallery-wide' },
+  { src: '/event.jpeg', alt: 'Seasonal vegetables arranged on a ceramic plate', className: 'gallery-tall' },
+  { src: '/maria-havens.jpeg', alt: 'Chef preparing a dish in a warm kitchen', className: '' },
+  { src: '/event.jpeg', alt: 'Atmospheric dining room with intimate tables', className: '' },
+  { src: '/maria-havens.jpeg', alt: 'Fresh pasta with seasonal ingredients', className: 'gallery-wide' },
 ]
-
 export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -133,12 +132,12 @@ export default function Page() {
           <p>A few moments from our table<br className="desktop-break" /> to yours.</p>
         </div>
         <div className="gallery-grid">
-          {galleryPreview.map((item) => (
-            <figure className={item.className} key={item.src}>
-              <img src={item.src} alt={item.alt} />
-            </figure>
-          ))}
-        </div>
+  {galleryPreview.map((item, index) => (
+    <figure className={item.className} key={`${item.src}-${index}`}>
+      <img src={item.src} alt={item.alt} />
+    </figure>
+  ))}
+</div>
         <div className="gallery-action">
           <Link href="/gallery" className="button button-dark">View full gallery <span>↗</span></Link>
         </div>
@@ -207,7 +206,7 @@ export default function Page() {
           <div>
             <h3>Maria Havens</h3>
             <p>Hospital Road<br />Kisii, Kenya</p>
-            <a href="https://maps.google.com" target="_blank" rel="noreferrer" className="text-link">Get directions <span>↗</span></a>
+            <a href="https://maps.app.goo.gl/gjssC9GsTScVm4BP7" target="_blank" rel="noreferrer" className="text-link">Get directions <span>↗</span></a>
           </div>
           <div>
             <h3>Hours</h3>
