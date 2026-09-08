@@ -38,7 +38,7 @@ export default async function MenuPage() {
         <header className="site-header">
           <Link href="/" className="wordmark">MARIA HAVENS<span>•</span></Link>
           <nav className="nav-links" aria-label="Main navigation">
-            <Link href="/">Home</Link>
+            
             <Link href="/menu" className="active">Menu</Link>
             <Link href="/about">Our story</Link>
             <Link href="/gallery">Gallery</Link>

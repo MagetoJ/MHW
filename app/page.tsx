@@ -2,29 +2,44 @@
 
 import { FormEvent, useState } from 'react'
 import Link from 'next/link'
+import { ImageCarousel, CarouselSlide } from '@/components/carousel'
 
-const menu = {
+const homeSlides: CarouselSlide[] = [
+  {
+    src: '/maria-havens.jpeg',
+    alt: 'Warmly lit restaurant dining room',
+    title: 'Good food, honestly made.',
+    subtitle: 'A neighborhood restaurant · Kisii, Kenya',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=85',
+    alt: 'Atmospheric dining room with intimate tables',
+    title: 'Warm & Inviting',
+    subtitle: 'Seasonal cooking since 2025',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1600&q=85',
+    alt: 'Seasonal vegetables arranged on a ceramic plate',
+    title: 'Fresh & Local',
+    subtitle: 'Sourced with care from local farmers and makers',
+  },
+]
+
+const menuHighlights = {
   Starters: [
     ['Sourdough & cultured butter', 'Warm grain sourdough, smoked sea salt', 'KES 800'],
     ['Charred market vegetables', 'Preserved lemon, whipped tahini, herbs', 'KES 1,600'],
-    ['Hamachi crudo', 'Green apple, fennel, finger lime', 'KES 2,100'],
   ],
   Mains: [
-    ['Hand-rolled cavatelli', 'Spring peas, pecorino, mint, lemon', 'KES 2,800'],
     ['Wood-fired half chicken', 'Salsa verde, young greens, pan jus', 'KES 3,400'],
     ['Seared local fish', 'Celery root, brown butter, capers', 'KES 3,600'],
   ],
-  Desserts: [
-    ['Olive oil cake', 'Citrus curd, crème fraîche, sea salt', 'KES 1,200'],
-    ['Dark chocolate pot de crème', 'Cocoa nib, flaky salt, olive oil', 'KES 1,300'],
-  ],
 }
 
-const gallery = [
+const galleryPreview = [
   { src: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1100&q=85', alt: 'Seasonal vegetables arranged on a ceramic plate', className: 'gallery-tall' },
   { src: 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=900&q=85', alt: 'Chef preparing a dish in a warm kitchen', className: '' },
   { src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=85', alt: 'Atmospheric dining room with intimate tables', className: '' },
-  { src: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=900&q=85', alt: 'Plated pasta with herbs and edible flowers', className: '' },
   { src: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=1100&q=85', alt: 'Fresh pasta with seasonal ingredients', className: 'gallery-wide' },
 ]
 
@@ -39,31 +54,29 @@ export default function Page() {
 
   return (
     <main>
-      <section className="hero" id="home">
-        <img className="hero-image" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2200&q=90" alt="Warmly lit restaurant dining room" />
-        <div className="hero-shade" />
-        <header className="site-header">
-          <Link href="/" className="wordmark">MARIA HAVENS<span>•</span></Link>
-          <nav className={`nav-links ${menuOpen ? 'is-open' : ''}`} aria-label="Main navigation">
-            <Link href="/menu" onClick={() => setMenuOpen(false)}>Menu</Link>
-            <Link href="/about" onClick={() => setMenuOpen(false)}>Our story</Link>
-            <Link href="/gallery" onClick={() => setMenuOpen(false)}>Gallery</Link>
-            <Link href="/contact" onClick={() => setMenuOpen(false)}>Visit</Link>
-          </nav>
-          <Link href="#reserve" className="header-cta">Reserve a table</Link>
-          <button className="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>
-            <span />
-            <span />
-          </button>
-        </header>
-        <div className="hero-content">
-          <p className="eyebrow light">A neighborhood restaurant · Kisii, Kenya</p>
-          <h1>Good food,<br /><em>honestly made.</em></h1>
-          <Link href="#reserve" className="button button-light">Reserve a table <span>↗</span></Link>
-        </div>
+      {/* Navigation Header */}
+      <header className="site-header">
+        <Link href="/" className="wordmark">MARIA HAVENS<span>•</span></Link>
+        <nav className={`nav-links ${menuOpen ? 'is-open' : ''}`} aria-label="Main navigation">
+          <Link href="/menu" onClick={() => setMenuOpen(false)}>Menu</Link>
+          <Link href="/about" onClick={() => setMenuOpen(false)}>Our story</Link>
+          <Link href="/gallery" onClick={() => setMenuOpen(false)}>Gallery</Link>
+          <Link href="/contact" onClick={() => setMenuOpen(false)}>Visit</Link>
+        </nav>
+        <Link href="#reserve" className="header-cta">Reserve a table</Link>
+        <button className="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>
+          <span />
+          <span />
+        </button>
+      </header>
+
+      {/* Hero Carousel Section */}
+      <section className="hero-carousel-wrap relative" id="home">
+        <ImageCarousel slides={homeSlides} />
         <p className="hero-note">Seasonal cooking<br />since 2025</p>
       </section>
 
+      {/* Section 01: Intro */}
       <section className="intro section-pad">
         <div className="section-kicker"><span>01</span><span>Our approach</span></div>
         <div className="intro-copy">
@@ -73,13 +86,14 @@ export default function Page() {
         </div>
       </section>
 
+      {/* Section 02: Menu Highlights Teaser */}
       <section className="menu-section section-pad" id="menu">
         <div className="section-heading">
-          <div className="section-kicker"><span>02</span><span>The menu</span></div>
-          <p>Our menu is a reflection of what is<br className="desktop-break" /> best today. It changes with the light.</p>
+          <div className="section-kicker"><span>02</span><span>Menu highlights</span></div>
+          <p>A preview of what is best today.<br className="desktop-break" /> Explore our full selection on the menu page.</p>
         </div>
         <div className="menu-list">
-          {Object.entries(menu).map(([category, dishes]) => (
+          {Object.entries(menuHighlights).map(([category, dishes]) => (
             <div className="menu-category" key={category}>
               <h3>{category}</h3>
               <div>
@@ -99,6 +113,7 @@ export default function Page() {
         <Link href="/menu" className="button button-dark">View full menu <span>↗</span></Link>
       </section>
 
+      {/* Section 03: Story Teaser */}
       <section className="story section-pad" id="story">
         <div className="story-image-wrap">
           <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1200&q=85" alt="Chef plating a dish in the Maria Havens kitchen" />
@@ -111,20 +126,25 @@ export default function Page() {
         </div>
       </section>
 
+      {/* Section 04: Gallery Teaser */}
       <section className="gallery-section section-pad" id="gallery">
         <div className="section-heading">
           <div className="section-kicker"><span>04</span><span>From the room</span></div>
           <p>A few moments from our table<br className="desktop-break" /> to yours.</p>
         </div>
         <div className="gallery-grid">
-          {gallery.map((item) => (
+          {galleryPreview.map((item) => (
             <figure className={item.className} key={item.src}>
               <img src={item.src} alt={item.alt} />
             </figure>
           ))}
         </div>
+        <div className="gallery-action">
+          <Link href="/gallery" className="button button-dark">View full gallery <span>↗</span></Link>
+        </div>
       </section>
 
+      {/* Section 05: Reservations Form */}
       <section className="reserve section-pad" id="reserve">
         <div className="reserve-heading">
           <div className="section-kicker light"><span>05</span><span>Reservations</span></div>
@@ -177,6 +197,7 @@ export default function Page() {
         </form>
       </section>
 
+      {/* Section 06: Visit / Location */}
       <section className="visit section-pad" id="visit">
         <div>
           <div className="section-kicker"><span>06</span><span>Find us</span></div>
@@ -203,6 +224,7 @@ export default function Page() {
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="site-footer">
         <Link href="/" className="wordmark">MARIA HAVENS<span>•</span></Link>
         <div className="footer-center">
